@@ -21,11 +21,6 @@ export const createUser = async (user: CreateUserParams) => {
     console.log(user);
 
     try {
-        // console.log("try", ID.unique());
-        // const userList = await users.list();
-
-        // console.log("userList", userList);
-
         const newUser = await users.create(
             ID.unique(),
             user.email,
@@ -33,8 +28,6 @@ export const createUser = async (user: CreateUserParams) => {
             undefined,
             user.name
         );
-
-        console.log({ newUser });
 
         return parseStringify(newUser);
     } catch (e: any) {
@@ -51,7 +44,7 @@ export const createUser = async (user: CreateUserParams) => {
     }
 };
 
-export const getuser = async (userId: string) => {
+export const getUser = async (userId: string) => {
     try {
         const user = await users.get(userId);
 
@@ -89,6 +82,20 @@ export const registerPatient = async ({
         );
 
         return parseStringify(newPatient);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getPatient = async (userId: string) => {
+    try {
+        const patient = await databases.listDocuments(
+            DATABASE_ID!,
+            PATIENT_COLLECTION_ID!,
+            [Query.equal("userId", userId)]
+        );
+
+        return parseStringify(patient.documents[0]);
     } catch (error) {
         console.log(error);
     }
