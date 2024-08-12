@@ -31,7 +31,8 @@ export const createUser = async (user: CreateUserParams) => {
 
         return parseStringify(newUser);
     } catch (e: any) {
-        console.log("catch error");
+        console.error(e);
+
         if (e && e?.code == 409) {
             const documents = await users.list([
                 Query.equal("email", [user.email]),
@@ -39,8 +40,6 @@ export const createUser = async (user: CreateUserParams) => {
 
             return documents?.users[0];
         }
-
-        console.log(e);
     }
 };
 
