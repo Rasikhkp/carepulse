@@ -3,10 +3,14 @@ import Image from "next/image";
 import logoFull from "@/public/assets/icons/logo-full.svg";
 import Link from "next/link";
 import AppointmentForm from "@/components/forms/AppointmentForm";
-import { getPatient } from "@/lib/actions/patient.actions";
+import { getPatient, getUser } from "@/lib/actions/patient.actions";
+import * as Sentry from "@sentry/nextjs";
 
 const page = async ({ params: { userId } }: SearchParamProps) => {
     const patient = await getPatient(userId);
+
+    const user = await getUser(userId);
+    Sentry.metrics.set("user_view_appointment_success", user.name);
 
     return (
         <div className="flex h-screen max-h-screen">
